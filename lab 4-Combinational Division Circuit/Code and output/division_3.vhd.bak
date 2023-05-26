@@ -1,0 +1,58 @@
+-- ========================================
+-- file_name:  eq3.vhd  
+-- author: Savan Yeshwanth Rao (2784780), Nischal Gudehindler Lingeswara (2825960)  
+-- ========================================
+
+
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity division is
+ port(
+ y, d: in std_logic_vector(4 downto 0);
+ q, r: out std_logic_vector(4 downto 0)
+ );
+end division;
+
+architecture rtl_arch of division is
+signal di4, di3, di2, di1, di0: std_logic;                      ------- divisor 
+signal y4, y3, y2, y1, y0: std_logic;                           ------- divident 
+
+signal P5, P4, P3, P2, P1, P0: unsigned(8 downto 0);		------- partial divedent
+
+signal D5 ,D4 ,D3 ,D2 ,D1: unsigned(8 downto 0);
+signal q4, q3, q2, q1, q0: std_logic;				------- for quotient
+begin
+   P5 <="0000" & y(4) & y(3) & y(2) & y(1) & y(0);              ------- 
+   D5 <="0000" & d(4) & d(3) & d(2) & d(1) & d(0);
+
+   P4 <= P5-D5 when P5 >= D5 else P5;
+   q4 <= '1' when P5 >= D5 else '0';
+   D4 <= "000" & d(4) & d(3) & d(2) & d(1) & d(0) & "0";
+
+   P3 <= P4-D4 when P4 >= D4 else P4;
+   q3 <= '1' when P4 >= D4 else '0';
+   D3 <= "00" & d(4) & d(3) & d(2) & d(1) & d(0) & "00";
+
+   P2 <= P3-D3 when P3 >= D3 else P3;
+   q2 <= '1' when P3 >= D3 else '0';
+   D2 <= "0" & d(4) & d(3) & d(2) & d(1) & d(0) & "000";
+
+   P1 <= P2-D2 when P2 >= D2 else P2;
+   q1 <= '1' when P5 >= D5 else '0';
+   D1 <=  d(4) & d(3) & d(2) & d(1) & d(0) & "0000";
+
+   P0 <= P1-D1 when P1 >= D1 else P1;				------- Lsb 
+   q0 <= '1' when P1 >= D1 else '0';
+   
+
+  r <= std_logic_vector(P0(4 downto 0));
+  q <= q4 & q3 & q2 & q1 & q0;
+end rtl_arch;
+
+
+
+
+
