@@ -1,0 +1,58 @@
+library ieee;
+use ieee.std_logic_1164.all;
+entity eq3_tb is
+end eq3_tb;
+
+architecture tb_arch of eq3_tb is
+   signal a : std_logic_vector(2 downto 0);
+   signal b : std_logic_vector(2 downto 0);
+   signal aeqb : std_logic;
+begin
+   -- instantiate the circuit under test
+   uut: entity work.eq3(struc_arch)
+   --uut: entity work.eq3(structure) 
+      port map(
+         a    => a,
+         b    => b,
+         aeqb => aeqb
+      );
+   -- test vector generator
+   process
+   begin
+      -- test vector 1
+      a <= "000";
+      b <= "000";
+      wait for 200 ns;
+      -- test vector 2
+      a <= "010";
+      b <= "000";
+      wait for 200 ns;
+      -- test vector 3
+      a <= "011";
+      b <= "111";
+      wait for 200 ns;
+      -- test vector 4
+      a <= "010";
+      b <= "010";
+      wait for 200 ns;
+      -- test vector 5
+      a <= "110";
+      b <= "001";
+      wait for 200 ns;
+      -- test vector 6
+      a <= "101";
+      b <= "101";
+      wait for 200 ns;
+      -- test vector 7
+      a <= "111";
+      b <= "011";
+      -- test vector 8
+      a <= "111";
+      b <= "111";
+      wait for 200 ns;
+      -- terminate simulation
+      assert false
+         report "Simulation Completed"
+         severity failure;
+   end process;
+end tb_arch;
